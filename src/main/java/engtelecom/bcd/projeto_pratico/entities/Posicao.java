@@ -3,9 +3,11 @@ package engtelecom.bcd.projeto_pratico.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"jogadorHasPartida"})
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
@@ -19,6 +21,6 @@ public class Posicao {
     @NonNull
     private String Titulo;
 
-    @OneToOne(mappedBy = "posicao", fetch = FetchType.LAZY, optional = false)
-    public Jogador_has_Partida jogadorHasPartida;
+    @OneToMany(mappedBy = "posicao", fetch = FetchType.EAGER)
+    public Set<JogadoresDaPartida> jogadorHasPartida;
 }

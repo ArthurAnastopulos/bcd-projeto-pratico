@@ -31,15 +31,17 @@ public class Partida {
 
     @ManyToOne
     @JoinColumn(name = "idSelecao1", nullable = false)
+    @NonNull
     private Selecao selecao1;
 
     @ManyToOne
     @JoinColumn(name = "idSelecao2", nullable = false)
+    @NonNull
     private Selecao selecao2;
 
     @OneToMany(mappedBy = "partida", fetch = FetchType.EAGER)
-    public Set<Partida_has_Edicao> setPartida = new HashSet<>();
+    public Set<PartidasDaEdicao> setPartida = new HashSet<>();
 
     @OneToMany(mappedBy = "partida", fetch = FetchType.EAGER)
-    public Set<Jogador_has_Partida> setPartida2 = new HashSet<>();
+    public Set<JogadoresDaPartida> setPartida2 = new HashSet<>();
 }

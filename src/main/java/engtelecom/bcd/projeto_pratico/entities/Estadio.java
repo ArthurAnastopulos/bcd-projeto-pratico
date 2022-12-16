@@ -11,22 +11,22 @@ import java.util.Set;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-@Table(name = "Estadio")
+@Table(name = "estadio")
 public class Estadio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idEstadio;
 
-    @Column(nullable = false)
+    @Column(name = "nome", nullable = false)
     @NonNull
     private String Nome;
 
-    @Column(nullable = false)
+    @Column(name = "local", nullable = false)
     @NonNull
     private String Local;
 
-    @OneToMany(mappedBy = "estadio", fetch = FetchType.LAZY )
+    @OneToMany(mappedBy = "estadio", fetch = FetchType.EAGER )
     private Set<Partida> partidas;
 
 

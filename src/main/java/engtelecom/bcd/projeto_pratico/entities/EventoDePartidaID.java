@@ -7,8 +7,9 @@ import lombok.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class Partida_has_Edicao_Id {
-    private Integer partida;
-    private Integer edicao;
-    private Integer fase;
+public class EventoDePartidaID {
+
+    private Integer evento;
+
+    private JogadoresDaPartidaID jogadorHasPartida;
 }

@@ -20,11 +20,11 @@ public class Edicao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idEdicao;
 
-    @Column(nullable = false)
+    @Column(name = "pais", nullable = false)
     @NonNull
     private String Pais;
 
-    @Column(nullable = false)
+    @Column(name = "ano", nullable = false)
     @NonNull
     private Integer Ano;
 
@@ -32,7 +32,7 @@ public class Edicao {
     private Set<Selecao> selecoes;
 
     @OneToMany(mappedBy = "edicao", fetch = FetchType.EAGER)
-    private Set<Partida_has_Edicao> setEdicao = new HashSet<>();
+    private Set<PartidasDaEdicao> setEdicao = new HashSet<>();
 
 
 }

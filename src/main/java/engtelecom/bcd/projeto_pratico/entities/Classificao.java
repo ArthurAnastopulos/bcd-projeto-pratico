@@ -17,7 +17,7 @@ public class Classificao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idClassificao;
 
-    @Column
+    @Column(name= "classificao", nullable = false)
     @NonNull
     private Double classificao;
 

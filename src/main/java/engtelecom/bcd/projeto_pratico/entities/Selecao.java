@@ -30,7 +30,7 @@ public class Selecao {
     private Edicao edicao;
 
     @ManyToMany
-    @JoinTable(name = "Jogador_has_Selecao",
+    @JoinTable(name = "SelecaoDoJogador",
             joinColumns = {
                     @JoinColumn(name="idSelecao",
                             referencedColumnName = "idSelecao",
@@ -41,11 +41,10 @@ public class Selecao {
                             referencedColumnName = "idJogador",
                             nullable = false, updatable = false)
             })
-    @NonNull
-    private Set<Jogador> jogadores;
+    private Set<Jogador> jogadores = new HashSet<>();
 
     @ManyToMany
-    @JoinTable(name = "Tecnico_has_Selecao",
+    @JoinTable(name = "SelecaoDoTecnico",
             joinColumns = {
                     @JoinColumn(name="idSelecao",
                             referencedColumnName = "idSelecao",
@@ -56,17 +55,22 @@ public class Selecao {
                             referencedColumnName = "idTecnico",
                             nullable = false, updatable = false)
             })
-    @NonNull
-    private Set<Tecnico> tecnicos;
+    private Set<Tecnico> tecnicos = new HashSet<>();
 
     @OneToMany(mappedBy = "selecao1")
-    private Set<Partida> partidasSelecao1;
+    private Set<Partida> partidasSelecao1 = new HashSet<>();
 
     @OneToMany(mappedBy = "selecao1")
-    private Set<Partida> partidasSelecao2;
+    private Set<Partida> partidasSelecao2 = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "idClassificao")
     private Classificao classificao;
 
+    public boolean adicionarJogador(Jogador jogador){
+        return this.jogadores.add(jogador);
+    }
+
+    public boolean adicionarTecnico(Tecnico tecnico){
+        return this.tecnicos.add(tecnico);
+    }
 }

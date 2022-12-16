@@ -10,8 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @ToString
-@IdClass(Partida_has_Edicao_Id.class)
-public class Partida_has_Edicao {
+@IdClass(PartidasDaEdicaoID.class)
+public class PartidasDaEdicao {
 
     @Id
     @ManyToOne(fetch = FetchType.EAGER)

@@ -9,8 +9,8 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString(exclude = {"selecoes"})
-@EqualsAndHashCode(exclude = {"selecoes"})
+@ToString(exclude = {"selecoes", "setJogador"})
+@EqualsAndHashCode(exclude = {"selecoes", "setJogador"})
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
@@ -41,6 +41,6 @@ public class Jogador {
     private Set<Selecao> selecoes = new HashSet<>();
 
     @OneToMany(mappedBy = "jogador", fetch = FetchType.EAGER)
-    public Set<Jogador_has_Partida> setJogador = new HashSet<>();
+    public Set<JogadoresDaPartida> setJogador = new HashSet<>();
 
 }

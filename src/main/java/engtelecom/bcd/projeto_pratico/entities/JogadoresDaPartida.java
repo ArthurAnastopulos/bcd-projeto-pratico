@@ -3,9 +3,6 @@ package engtelecom.bcd.projeto_pratico.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @NoArgsConstructor
 @Getter
 @Setter
@@ -13,8 +10,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @ToString
-@IdClass(Jogador_has_Partida_Id.class)
-public class Jogador_has_Partida {
+@IdClass(JogadoresDaPartidaID.class)
+public class JogadoresDaPartida {
 
 
     @Id
@@ -25,8 +22,7 @@ public class Jogador_has_Partida {
     @ManyToOne(fetch = FetchType.EAGER)
     private Partida partida;
 
-    @Id
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Posicao posicao;
 
 }

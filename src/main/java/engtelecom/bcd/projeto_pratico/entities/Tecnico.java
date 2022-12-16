@@ -37,7 +37,7 @@ public class Tecnico {
     @NonNull
     private String Nacionalidade;
 
-    @ManyToMany(mappedBy = "tecnicos")
+    @ManyToMany(mappedBy = "tecnicos", fetch = FetchType.EAGER)
     private Set<Selecao> selecoes = new HashSet<>();
 
 
