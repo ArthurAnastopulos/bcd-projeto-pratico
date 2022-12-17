@@ -3,6 +3,7 @@ package engtelecom.bcd.projeto_pratico.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -21,6 +22,6 @@ public class Classificao {
     @NonNull
     private Double classificao;
 
-    @OneToMany(mappedBy = "classificao")
-    private Set<Selecao> selecoes;
+    @OneToMany(mappedBy = "classificao", fetch = FetchType.EAGER)
+    public Set<ClassificaoDasSelecoes> classificaoDasSelecoesSet = new HashSet<>();
 }

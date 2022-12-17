@@ -63,8 +63,8 @@ public class Selecao {
     @OneToMany(mappedBy = "selecao1")
     private Set<Partida> partidasSelecao2 = new HashSet<>();
 
-    @ManyToOne
-    private Classificao classificao;
+    @OneToMany(mappedBy = "selecao", fetch = FetchType.EAGER)
+    public Set<ClassificaoDasSelecoes> setSelecao = new HashSet<>();
 
     public boolean adicionarJogador(Jogador jogador){
         return this.jogadores.add(jogador);

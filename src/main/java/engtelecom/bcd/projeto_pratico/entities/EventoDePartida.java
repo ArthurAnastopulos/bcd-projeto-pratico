@@ -22,6 +22,7 @@ public class EventoDePartida {
     @ManyToOne
     private Evento evento;
 
+    @Id
     @Column(name = "tempoDoEvento", nullable = false)
     private double tempoDoEvento;
 

@@ -14,9 +14,12 @@ import java.util.*;
 @SpringBootApplication
 public class ProjetoPraticoApplication {
 	private final EventoRepository eventoRepository;
+	private final ClassificaoDasSelecoesRepository classificaoDasSelecoesRepository;
 
-	public ProjetoPraticoApplication(EventoRepository eventoRepository) {
+	public ProjetoPraticoApplication(EventoRepository eventoRepository,
+									 ClassificaoDasSelecoesRepository classificaoDasSelecoesRepository) {
 		this.eventoRepository = eventoRepository;
+		this.classificaoDasSelecoesRepository = classificaoDasSelecoesRepository;
 	}
 
 	public static void main(String[] args) {
@@ -35,7 +38,8 @@ public class ProjetoPraticoApplication {
 									ClassificaoRepository classificaoRepository,
 									EventoDePartidaRepository eventoDePartidaRepository,
 									JogadoresDaPartidaRepository jogadoresDaPartidaRepository,
-									PartidasDaEdicaoRepository partidasDaEdicaoRepository)
+									PartidasDaEdicaoRepository partidasDaEdicaoRepository,
+									ClassificaoDasSelecoesRepository classificaoDasSelecoesRepository)
 	{
 		return (args) -> {
 			System.out.println("---- Iniciando a Aplicação ----");
@@ -48,8 +52,8 @@ public class ProjetoPraticoApplication {
 				System.out.println("""
 					C - Para Inserção\s
 					R - Para Seleção\s
-					U - Para Atualizar\s
-					D - Para Deletar""");
+					U - Para Atualizar (Não Implementado por falta de tempo Hábil)\s
+					D - Para Deletar (Não Implementado por falta de tempo Hábil)""");
 
 				String opcao = scanner.nextLine();
 
@@ -68,7 +72,8 @@ public class ProjetoPraticoApplication {
 								classificaoRepository,
 								eventoDePartidaRepository,
 								jogadoresDaPartidaRepository,
-								partidasDaEdicaoRepository);
+								partidasDaEdicaoRepository,
+								classificaoDasSelecoesRepository);
 						break;
 					case "r":
 						System.out.println("Opção de Seleção Selecionada");
@@ -83,11 +88,12 @@ public class ProjetoPraticoApplication {
 								classificaoRepository,
 								eventoDePartidaRepository,
 								jogadoresDaPartidaRepository,
-								partidasDaEdicaoRepository);
+								partidasDaEdicaoRepository,
+								classificaoDasSelecoesRepository);
 						break;
 					case "u":
 						System.out.println("Opção de Atualização Selecionada");
-						updateMenu(jogadorRepository,
+						/*updateMenu(jogadorRepository,
 								tecnicoRepository,
 								selecaoRepository,
 								edicaoRepository,
@@ -98,7 +104,9 @@ public class ProjetoPraticoApplication {
 								classificaoRepository,
 								eventoDePartidaRepository,
 								jogadoresDaPartidaRepository,
-								partidasDaEdicaoRepository);
+								partidasDaEdicaoRepository,
+								classificaoDasSelecoesRepository);*/
+						System.out.println("Não Implementado por Falta de Tempo Hábil");
 						break;
 					case "d":
 						System.out.println("Opção para Deletar Selecionada");
@@ -124,13 +132,14 @@ public class ProjetoPraticoApplication {
 						   ClassificaoRepository classificaoRepository,
 						   EventoDePartidaRepository eventoDePartidaRepository,
 						   JogadoresDaPartidaRepository jogadoresDaPartidaRepository,
-						   PartidasDaEdicaoRepository partidasDaEdicaoRepository)
+						   PartidasDaEdicaoRepository partidasDaEdicaoRepository,
+						   ClassificaoDasSelecoesRepository classificaoDasSelecoesRepository)
 	{
 		boolean isRunning = true;
 		Scanner scanner = new Scanner(System.in);
 		while (isRunning)
 		{
-			System.out.println("Digite o número da lista abaixo, para fazer a Operação selecionada:");
+			System.out.println("Digite o número da lista abaixo, para fazer a Operação selecionada. Ou para voltar para atras digite qualquer outro botão não mencionado:");
 			System.out.println("""
 				1 - Adicionar informações (Evento) de uma partida (em andamento)\s
 				2 - Adicionar uma partida\s
@@ -310,8 +319,17 @@ public class ProjetoPraticoApplication {
 						System.out.println("Não foi encontrado esta classifcaoção");
 						break;
 					}
-					sClassf.get().setClassificao(classf.get());
-					selecaoRepository.save(sClassf.get());
+
+					System.out.print("Informe a fase em que está ocorrendo a Classifição: ");
+					String idFase_ = scanner.nextLine();
+					Optional<Fase> classFase = faseRepository.findById(Integer.parseInt(idFase_));
+					if(classFase.isEmpty()){
+						System.out.println("Fase não encontrada");
+						break;
+					}
+
+					ClassificaoDasSelecoes classificaoDasSelecoes = new ClassificaoDasSelecoes(classf.get(), sClassf.get(), classFase.get());
+					classificaoDasSelecoesRepository.save(classificaoDasSelecoes);
 					System.out.println("Classifcao salva com Sucesso.");
 					break;
 				case "9":
@@ -481,13 +499,14 @@ public class ProjetoPraticoApplication {
 						   ClassificaoRepository classificaoRepository,
 						   EventoDePartidaRepository eventoDePartidaRepository,
 						   JogadoresDaPartidaRepository jogadoresDaPartidaRepository,
-						   PartidasDaEdicaoRepository partidasDaEdicaoRepository)
+						   PartidasDaEdicaoRepository partidasDaEdicaoRepository,
+						   ClassificaoDasSelecoesRepository classificaoDasSelecoesRepository)
 	{
 		boolean isRunning = true;
 		Scanner scanner = new Scanner(System.in);
 		while (isRunning)
 		{
-			System.out.println("Digite o número da lista abaixo, para fazer a Operação selecionada:");
+			System.out.println("Digite o número da lista abaixo, para fazer a Operação selecionada. Ou para voltar para atras digite qualquer outro botão não mencionado:");
 			System.out.println("""
 				1 - Quais os jogadores e técnicos de cada seleção\s
 				2 - Quais jogadores participaram de quais partidas\s
@@ -509,7 +528,18 @@ public class ProjetoPraticoApplication {
 			String opcao = scanner.nextLine();
 			switch (opcao)
 			{
+				case "1":
+					System.out.println("Selecionado opção ppara Listar Todos os Jogadores e Técnicos de cada Seleção");
 
+					
+
+					break;
+				case "2":
+					break;
+				case  "3":
+					break;
+				case "4":
+					break;
 			}
 		}
 	}
@@ -525,7 +555,8 @@ public class ProjetoPraticoApplication {
 						   ClassificaoRepository classificaoRepository,
 						   EventoDePartidaRepository eventoDePartidaRepository,
 						   JogadoresDaPartidaRepository jogadoresDaPartidaRepository,
-						   PartidasDaEdicaoRepository partidasDaEdicaoRepository)
+						   PartidasDaEdicaoRepository partidasDaEdicaoRepository,
+						   ClassificaoDasSelecoesRepository classificaoDasSelecoesRepository)
 	{
 		boolean isRunning = true;
 		Scanner scanner = new Scanner(System.in);
