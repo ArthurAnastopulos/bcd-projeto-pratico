@@ -11,4 +11,7 @@ import java.util.Optional;
 public interface JogadoresDaPartidaRepository extends CrudRepository<JogadoresDaPartida, Integer> {
 
     Optional<JogadoresDaPartida> findByJogadorAndPartida(Jogador jogador, Partida partida);
+
+    Optional<Iterable<JogadoresDaPartida>> findByPartida(Partida partida);
+
 }

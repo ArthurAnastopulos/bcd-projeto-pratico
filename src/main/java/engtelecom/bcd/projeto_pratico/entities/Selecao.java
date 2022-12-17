@@ -29,7 +29,7 @@ public class Selecao {
     @NonNull
     private Edicao edicao;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "SelecaoDoJogador",
             joinColumns = {
                     @JoinColumn(name="idSelecao",
@@ -43,7 +43,7 @@ public class Selecao {
             })
     private Set<Jogador> jogadores = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "SelecaoDoTecnico",
             joinColumns = {
                     @JoinColumn(name="idSelecao",

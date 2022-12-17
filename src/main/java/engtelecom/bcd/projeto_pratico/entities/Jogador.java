@@ -40,7 +40,7 @@ public class Jogador {
     @ManyToMany(mappedBy = "jogadores")
     private Set<Selecao> selecoes = new HashSet<>();
 
-    @OneToMany(mappedBy = "jogador", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "jogador")
     public Set<JogadoresDaPartida> setJogador = new HashSet<>();
 
 }

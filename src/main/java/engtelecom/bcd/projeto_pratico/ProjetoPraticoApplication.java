@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @SpringBootApplication
@@ -509,7 +511,7 @@ public class ProjetoPraticoApplication {
 			System.out.println("Digite o número da lista abaixo, para fazer a Operação selecionada. Ou para voltar para atras digite qualquer outro botão não mencionado:");
 			System.out.println("""
 				1 - Quais os jogadores e técnicos de cada seleção\s
-				2 - Quais jogadores participaram de quais partidas\s
+				2 - Quais jogadores participaram de uma determinada partida\s
 				3 -  Informações sobre um Determinado Jogador (Data de Nascimento, Nacionalidade)\s
 				4 - Qual a posição de um Jogador em uma determinada partida\s
 				5 - Qual goleiro foi menos vazado (não levou gol) em cada edição\s
@@ -529,16 +531,102 @@ public class ProjetoPraticoApplication {
 			switch (opcao)
 			{
 				case "1":
-					System.out.println("Selecionado opção ppara Listar Todos os Jogadores e Técnicos de cada Seleção");
+					System.out.println("Selecionado opção para Listar Todos os Jogadores e Técnicos de cada Seleção");
 
-					
+					Iterable<Selecao> todasSelecoes = selecaoRepository.findAll();
 
+					StringBuilder sb1 = new StringBuilder();
+
+					sb1.append(String.format("|%-25s|%-25s|%-25s|%-25s|\n", "Seleção", "Edição" ,"Nome", "Sobrenome"));
+					sb1.append("----------------------------------------------------------------\n");
+
+					todasSelecoes.forEach(selecao -> {
+						Set<Jogador> sbPlayers = selecao.getJogadores();
+						sbPlayers.forEach(jogador -> {
+							sb1.append(String.format("|%-25s|%-25s", selecao.getPais(), selecao.getEdicao().getAno()));
+							sb1.append(String.format("|%-25s|%-25s|\n", jogador.getNome(), jogador.getSobrenome()));
+						});
+						Set<Tecnico> sbTecnico = selecao.getTecnicos();
+						sbTecnico.forEach(tecnico -> {
+							sb1.append(String.format("|%-25s|%-25s", selecao.getPais(), selecao.getEdicao().getAno()));
+							sb1.append(String.format("|%-25s|%-25s|\n", tecnico.getNome(), tecnico.getSobrenome()));
+						});
+					});
+					System.out.println(sb1);
 					break;
 				case "2":
+					System.out.println("Selecionado opção para Listar os Jogadores que participaram de uma Determinada partida: ");
+					System.out.print("Digite numero identificador da partida: ");
+					String procurarPartida = scanner.nextLine();
+
+					Optional<Partida> partida_ = partidaRepository.findById(Integer.parseInt(procurarPartida));
+					if(partida_.isEmpty()){
+						System.out.println("Partida não encontrada");
+						break;
+					}
+
+					Optional<Iterable<JogadoresDaPartida>> jogadoresDaPartida = jogadoresDaPartidaRepository.findByPartida(partida_.get());
+					if (jogadoresDaPartida.isEmpty()){
+						System.out.println("Não encontrou nenhum jogador na partida");
+						break;
+					}
+
+					jogadoresDaPartida.get().forEach(jogadoresDaPartida1 -> {
+						System.out.println("Teste");
+					});
 					break;
 				case  "3":
+					System.out.println("Selecionado busca de um determindado Jogador: ");
+					System.out.print("Digite o numero identificador deste Jogador: ");
+					String buscaJogador = scanner.nextLine();
+
+					Optional<Jogador> jogadorOptional_ = jogadorRepository.findById(Integer.parseInt(buscaJogador));
+					if (jogadorOptional_.isEmpty()){
+						System.out.println("Jogador nao encontrado");
+						break;
+					}
+
+					StringBuilder sb3 = new StringBuilder();
+					sb3.append(String.format("|%-25s|%-25s|%-25s|%-25s|\n", "Nome", "Sobrenome" ,"DataNasc", "Nacionalidae"));
+					sb3.append("----------------------------------------------------------------\n");
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					sb3.append(String.format("|%-25s|%-25s|%-25s|%-25s|\n", jogadorOptional_.get().getNome(), jogadorOptional_.get().getSobrenome(), dateFormat.format(jogadorOptional_.get().getDataNasc()), jogadorOptional_.get().getNacionalidade()));
+					System.out.println(sb3);
 					break;
 				case "4":
+					System.out.println("Selecionado opção para listar a posição de um jogador em uma determinada partida: ");
+					System.out.println("Digite o número identificador do Jogador a ser buscado");
+					String strJogador = scanner.nextLine();
+					Optional<Jogador> jogadorPosicao = jogadorRepository.findById(Integer.parseInt(strJogador));
+					if (jogadorPosicao.isEmpty()){
+						System.out.println("Jogador não encontrado");
+						break;
+					}
+					System.out.print("Digite o número identificador da Partida a ser buscada: ");
+					String  strPartida = scanner.nextLine();
+					Optional<Partida> optionalPartida = partidaRepository.findById(Integer.parseInt(strPartida));
+					if (optionalPartida.isEmpty()){
+						System.out.println("Partida não Encontrada");
+						break;
+					}
+
+					Optional<JogadoresDaPartida> optionalJogadoresDaPartida = jogadoresDaPartidaRepository.findByJogadorAndPartida(jogadorPosicao.get(), optionalPartida.get());
+					if (optionalJogadoresDaPartida.isEmpty()){
+						System.out.println("Jogador não esta nesta partida");
+						break;
+					}
+
+					StringBuilder sb4 = new StringBuilder();
+					sb4.append(String.format("|%-25s|%-25s|%-25s|\n", "Nome", "Sobrenome" ,"Posição"));
+					sb4.append("----------------------------------------------------------------\n");
+					sb4.append(String.format("|%-25s|%-25s|%-25s|\n", jogadorPosicao.get().getNome(), jogadorPosicao.get().getSobrenome(), optionalJogadoresDaPartida.get().getPosicao().getTitulo()));
+					System.out.println(sb4);
+					break;
+				case "5":
+
+				default:
+					System.out.println("Retornando ao Menu Principal");
+					isRunning = false;
 					break;
 			}
 		}
