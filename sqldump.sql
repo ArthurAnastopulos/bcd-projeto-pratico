@@ -79,7 +79,7 @@ CREATE TABLE `edicao` (
   `ano` int NOT NULL,
   `pais` varchar(255) NOT NULL,
   PRIMARY KEY (`id_edicao`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,7 +88,7 @@ CREATE TABLE `edicao` (
 
 LOCK TABLES `edicao` WRITE;
 /*!40000 ALTER TABLE `edicao` DISABLE KEYS */;
-INSERT INTO `edicao` VALUES (1,2022,'Catar');
+INSERT INTO `edicao` VALUES (1,2022,'Catar'),(2,2018,'Russia'),(3,2014,'Brasil');
 /*!40000 ALTER TABLE `edicao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -350,7 +350,7 @@ CREATE TABLE `selecao` (
   PRIMARY KEY (`id_selecao`),
   KEY `FKp4h4yoqsc8sma0cu2a5r5iyhw` (`id_edicao`),
   CONSTRAINT `FKp4h4yoqsc8sma0cu2a5r5iyhw` FOREIGN KEY (`id_edicao`) REFERENCES `edicao` (`id_edicao`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -359,7 +359,7 @@ CREATE TABLE `selecao` (
 
 LOCK TABLES `selecao` WRITE;
 /*!40000 ALTER TABLE `selecao` DISABLE KEYS */;
-INSERT INTO `selecao` VALUES (1,'Brasil',1),(2,'Croácia',1);
+INSERT INTO `selecao` VALUES (1,'Brasil',1),(2,'Croácia',1),(3,'Brasil',2),(4,'Brasil',3);
 /*!40000 ALTER TABLE `selecao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -461,4 +461,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-17 18:44:53
+-- Dump completed on 2022-12-18 12:20:57

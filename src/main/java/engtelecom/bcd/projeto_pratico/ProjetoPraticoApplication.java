@@ -510,23 +510,13 @@ public class ProjetoPraticoApplication {
 		{
 			System.out.println("Digite o número da lista abaixo, para fazer a Operação selecionada. Ou para voltar para atras digite qualquer outro botão não mencionado:");
 			System.out.println("""
-				1 - Quais os jogadores e técnicos de cada seleção\s
-				2 - Quais jogadores participaram de uma determinada partida\s
-				3 -  Informações sobre um Determinado Jogador (Data de Nascimento, Nacionalidade)\s
-				4 - Qual a posição de um Jogador em uma determinada partida\s
-				5 - Qual goleiro foi menos vazado (não levou gol) em cada edição\s
-				6 - Qual jogador é o maior goleador de todas as copas\s
-				7 - Quais jogadores foram artilheiros (maior goleador) de cada edição\s
-				8 - Qual jogador participou de mais edições de copa\s
-				9 - Qual jogador mais novo que participou de uma copa\s
-				10 - Qual jogador mais velho que participou de uma copa\s
-				11 - Qual jogador conquistou mais copas\s
-				12 - Qual seleção ganhou mais partidas em todas edições\s
-				13 - Quantas copas possui cada seleção\s
-				14 - Qual seleção participou de mais copas\s
-				15 - Listar todos os atacantes de todos os times, da edição x
-				16 - Listar o total de gols de todos os atacantes de todos as seleções do Brasil (todas edições)\s
-				17 - Qual jogador é o maior goleador de todas as copas""");
+					1 - Quais os jogadores e técnicos de cada seleção\s
+					2 - Quais jogadores participaram de uma determinada partida\s
+					3 - Informações sobre um Determinado Jogador (Data de Nascimento, Nacionalidade)\s
+					4 - Qual a posição de um Jogador em uma determinada partida\s
+					5 - Listar todos os atacantes de todos os times, da edição x
+					6 - Quantas copas possui cada seleção\s
+					7 - Qual seleção participou de mais copas""");
 			String opcao = scanner.nextLine();
 			switch (opcao)
 			{
@@ -623,7 +613,82 @@ public class ProjetoPraticoApplication {
 					System.out.println(sb4);
 					break;
 				case "5":
+					System.out.println("Selecionado opção para listar todos os atacantes de todos os times, da edição x");
+					System.out.print("Digite o ano da Copa que deseja buscar: ");
+					String edicaoStr = scanner.nextLine();
+					Optional<Edicao> optionalEdicao = edicaoRepository.findByAno(Integer.parseInt(edicaoStr));
+					if(optionalEdicao.isEmpty()){
+						System.out.println("Copa não encontrada");
+						break;
+					}
 
+					Optional<Iterable<PartidasDaEdicao>> optionalIterable = partidasDaEdicaoRepository.findByEdicao(optionalEdicao.get());
+					if(optionalIterable.isEmpty()){
+						System.out.println("Esta edição ainda não possui nenhuma partida arquivada");
+						break;
+					}
+
+					StringBuilder sb5 = new StringBuilder();
+					sb5.append(String.format("|%-25s|%-25s|%-25s|\n", "Nome", "Sobrenome", "Nacionalidade"));
+					sb5.append("----------------------------------------------------------------\n");
+
+					optionalIterable.get().forEach(partidasDaEdicao -> {
+						Optional<Iterable<JogadoresDaPartida>> optionalJogadoresDaPartidaIterable = jogadoresDaPartidaRepository.findByPartida(partidasDaEdicao.getPartida());
+						optionalJogadoresDaPartidaIterable.ifPresent(jogadoresDaPartidas -> jogadoresDaPartidas.forEach(jogadoresDaPartida1 -> {
+								if(jogadoresDaPartida1.getPosicao().getTitulo().equals("Atacante")) {
+									sb5.append(String.format("|%-25s|%-25s|%-25s|\n", jogadoresDaPartida1.getJogador().getNome(), jogadoresDaPartida1.getJogador().getSobrenome(), jogadoresDaPartida1.getJogador().getNacionalidade()));
+								}
+						}));
+					});
+					System.out.println(sb5);
+					break;
+				case "6":
+					System.out.println("Selecionado, Quantas copas possui cada seleção: ");
+					Iterable<Selecao> allSelecoes = selecaoRepository.findAll();
+					HashMap<String, Integer> countSelecoes = new HashMap<>();
+
+					allSelecoes.forEach(selecao -> {
+						if(! countSelecoes.containsKey(selecao.getPais())) {
+							countSelecoes.put(selecao.getPais(), 1);
+						} else {
+							countSelecoes.put(selecao.getPais(), countSelecoes.get(selecao.getPais()) + 1);
+						}
+					});
+
+					StringBuilder sb6 = new StringBuilder();
+					sb6.append(String.format("|%-25s|%-35s|\n", "Seleção", "Quantida de Edições"));
+					sb6.append("----------------------------------------------------------------\n");
+
+					for (String pais : countSelecoes.keySet())
+					{
+						sb6.append(String.format("|%-25s|%-35s|\n", pais, countSelecoes.get(pais)));
+					}
+					System.out.println(sb6);
+					break;
+				case "7":
+					System.out.println("Selecionado, Qual seleção participou de mais copas: ");
+					Iterable<Selecao> allSelecoes_ = selecaoRepository.findAll();
+					HashMap<String, Integer> countSelecoes_ = new HashMap<>();
+
+					allSelecoes_.forEach(selecao -> {
+						if(! countSelecoes_.containsKey(selecao.getPais())) {
+							countSelecoes_.put(selecao.getPais(), 1);
+						} else {
+							countSelecoes_.put(selecao.getPais(), countSelecoes_.get(selecao.getPais()) + 1);
+						}
+					});
+
+					StringBuilder sb7 = new StringBuilder();
+					int maxValueInMap = (Collections.max(countSelecoes_.values()));
+					for (Map.Entry<String, Integer> entry :
+							countSelecoes_.entrySet()) {
+
+						if (entry.getValue() == maxValueInMap) {
+							sb7.append(String.format("A seleção que mais participou é %-10s com %-4s vezes \n", entry.getKey(), entry.getValue()));
+						}
+					}
+					System.out.println(sb7);
+					break;
 				default:
 					System.out.println("Retornando ao Menu Principal");
 					isRunning = false;

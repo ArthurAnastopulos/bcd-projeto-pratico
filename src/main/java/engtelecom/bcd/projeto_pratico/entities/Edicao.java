@@ -22,11 +22,11 @@ public class Edicao {
 
     @Column(name = "pais", nullable = false)
     @NonNull
-    private String Pais;
+    private String pais;
 
     @Column(name = "ano", nullable = false)
     @NonNull
-    private Integer Ano;
+    private Integer ano;
 
     @OneToMany(mappedBy = "edicao")
     private Set<Selecao> selecoes;
