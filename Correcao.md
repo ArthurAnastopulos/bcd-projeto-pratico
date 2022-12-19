@@ -10,3 +10,12 @@
 - Como eu sei quais seleções se enfrentaram nas diferentes fase (fase de grupos, oitavas, quartas, semi e final)
 - Qual a necessidade dos relacionamentos identificadores entre Partida, Seleção e Estádio? Do jeito que está não parece necessário
 - Qual a necessidade da tabela Evento? Não bastaria um N-pra-N entre Jogador e Partida? 
+
+## Código Java
+
+- Apesar de prover implementação para diversas operações de consulta e inserção, não apresentou as consultas solicitadas
+  -  Listar o nome e país de todos os atacantes, de todos os times, da edição X
+  -  Listar o total de gols de todos os atacantes de todos as seleções do Brasil (todas edições)
+  -  Qual jogador é o maior goleador de todas as copas
+- Nota: 7
+
